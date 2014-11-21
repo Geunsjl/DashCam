@@ -14,6 +14,9 @@
     <string name="lblAbout">Deze app is ontwikkeld door Jan-Lennert Geuns voor de lessen van Mobiele Communicatie.</string>
     <string name="lblDeveloper">Jan-Lennert Geuns, 3ICT1</string>
     <string name="lblEmail"><b><u>Contacteer mij!</u></b></string>
-    <string name="lblSite"><b><u>http://geuns.3eeweb.com</u></b>></string>
+    <string name="lblSite"><b><u>http://geuns.3eeweb.com</u></b></string>
+    <string name="title_activity_camera">CameraActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

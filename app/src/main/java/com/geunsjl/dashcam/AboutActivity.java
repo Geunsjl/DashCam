@@ -1,5 +1,6 @@
 package com.geunsjl.dashcam;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,8 +16,11 @@ public class AboutActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-    }
 
+        /* Verbergt de actionBar */
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -40,6 +44,7 @@ public class AboutActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //Opent de email applicatie als er op de link wordt geduwd
     public void sendEmail(View v){
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
