@@ -1,26 +1,27 @@
 package com.geunsjl.dashcam;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.content.Intent;
+import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class AboutActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_about);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_about, menu);
         return true;
     }
 
@@ -39,23 +40,16 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void goToMap(View v) {
-        Intent intent = new Intent(this, MapsActivity.class);
-        startActivity(intent);
+    public void sendEmail(View v){
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"geunsjl@gmail.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Dashcam");
+        i.putExtra(Intent.EXTRA_TEXT   , "");
+        try {
+            startActivity(Intent.createChooser(i, "Verstuur mail"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(AboutActivity.this, "Er zijn geen email cliënts geïnstalleerd.", Toast.LENGTH_SHORT).show();
+        }
     }
-
-    public void openMediaGalerij(View v){
-        final int RESULT_GALLERY = 0;
-
-        Intent galleryIntent = new Intent(
-                Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent , RESULT_GALLERY );
-    }
-
-    public void goToAbout(View v){
-        Intent myIntent = new Intent(this, AboutActivity.class);
-        startActivity(myIntent);
-    }
-
 }

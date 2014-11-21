@@ -39,6 +39,10 @@
             android:name="com.geunsjl.dashcam.MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about" >
+        </activity>
     </application>
 
 </manifest>
