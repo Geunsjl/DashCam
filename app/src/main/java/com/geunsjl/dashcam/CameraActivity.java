@@ -26,12 +26,21 @@ public class CameraActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-        imageView = (ImageView) findViewById(R.id.ivReturnedPic);
-        bTakePic = (Button) findViewById(R.id.bTakePic);
         videoView = (VideoView) findViewById(R.id.videoView);
+        startCamera();
     }
 
-    public void bTakePic(View v)
+    private void startCamera() {
+        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+        }
+    }
+
+    public void startCamera(View v)
     {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
