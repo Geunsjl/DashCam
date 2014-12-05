@@ -1,7 +1,6 @@
 package com.geunsjl.dashcam;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,12 +16,10 @@ import android.widget.VideoView;
  */
 public class CameraActivity extends ActionBarActivity {
 
-    Intent i;
-    final static int cameraData = 0;
-    Bitmap bmp;
     ImageView imageView;
     Button bTakePic;
     VideoView videoView;
+
     static final int REQUEST_VIDEO_CAPTURE = 1;
 
     @Override
@@ -37,6 +34,9 @@ public class CameraActivity extends ActionBarActivity {
     public void bTakePic(View v)
     {
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
         }
