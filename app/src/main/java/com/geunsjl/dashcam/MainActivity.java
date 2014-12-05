@@ -1,8 +1,8 @@
 package com.geunsjl.dashcam;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,5 +62,12 @@ public class MainActivity extends ActionBarActivity {
         Intent myIntent = new Intent(this, SettingsActivity.class);
         startActivity(myIntent);
     }
+
+    public void goToCamera(View v){
+        Intent myIntent = new Intent(this, CameraActivity.class);
+        startActivity(myIntent);
+    }
+
+
 
 }
