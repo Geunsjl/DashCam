@@ -31,13 +31,20 @@ public class CameraActivity extends ActionBarActivity {
     }
 
     private void startCamera() {
-        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 
-        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
 
-        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
-        }
+            Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+            takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
+
+
+            if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+                startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+
+            }
+            finish();
+
+
     }
 
     public void startCamera(View v)
