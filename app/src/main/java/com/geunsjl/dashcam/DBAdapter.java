@@ -35,8 +35,8 @@ public class DBAdapter {
 
     // TODO: Setup your field numbers here (0 = KEY_ROWID, 1=...)
     public static final int COL_TIME = 1;
-    public static final int COL_LATITUTDE = 2;
-    public static final int COL_LONGTITUDE = 3;
+    public static final double COL_LATITUTDE = 2;
+    public static final double COL_LONGTITUDE = 3;
 
 
     public static final String[] ALL_KEYS = new String[] {KEY_ROWID, KEY_TIME, KEY_LATITUDE, KEY_LONGTITUDE};
@@ -95,7 +95,7 @@ public class DBAdapter {
     }
 
     // Add a new set of values to the database.
-    public long insertRow(String time, int latitude, String longtitude) {
+    public long insertRow(String time, double latitude, double longtitude) {
 		/*
 		 * CHANGE 3:
 		 */

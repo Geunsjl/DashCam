@@ -16,6 +16,8 @@ import android.widget.VideoView;
  */
 public class CameraActivity extends ActionBarActivity {
 
+
+
     ImageView imageView;
     Button bTakePic;
     VideoView videoView;
@@ -28,7 +30,9 @@ public class CameraActivity extends ActionBarActivity {
         setContentView(R.layout.activity_camera);
         videoView = (VideoView) findViewById(R.id.videoView);
         startCamera();
+
     }
+
 
     private void startCamera() {
 
@@ -43,8 +47,6 @@ public class CameraActivity extends ActionBarActivity {
 
             }
             finish();
-
-
     }
 
     public void startCamera(View v)

@@ -1,5 +1,8 @@
 package com.geunsjl.dashcam;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -9,10 +12,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.Calendar;
 
 
 public class MapsActivity extends FragmentActivity {
+
+    DBAdapter myDb;
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
@@ -23,12 +31,34 @@ public class MapsActivity extends FragmentActivity {
         setUpMapIfNeeded();
         mMap.setOnMyLocationChangeListener(myLocationChangeListener);
 
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent.getStringExtra("showRoute").equals("showRoute")){
+            showRoute();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
+
+
+    private void openDB() {
+        myDb = new DBAdapter(this);
+        myDb.open();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        myDb.close();
     }
 
     /**
@@ -75,13 +105,52 @@ public class MapsActivity extends FragmentActivity {
         @Override
         public void onMyLocationChange(Location location) {
 
+            String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
 
+            //update map position
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(loc, 10);
             mMap.animateCamera(cameraUpdate);
 
-            mMap.addPolyline(new PolylineOptions().geodesic(true)
-                .add(new LatLng(location.getLatitude(), location.getLongitude())));
+            //Write location to database
+            myDb.insertRow(mydate, loc.latitude, loc.longitude);
+
+            //Draw route on map
+            drawRouteOnMap(loc.latitude, loc.longitude);
         }
     };
+
+    //display route
+    public void showRoute()
+    {
+        Cursor cursor = myDb.getAllRows();
+        displayRecordSet(cursor);
+    }
+
+    private void displayRecordSet(Cursor cursor) {
+
+        PolylineOptions line = new PolylineOptions();
+        //check if there is data
+        if(cursor.moveToFirst())
+            //Process data
+            do {
+                double latitude = cursor.getDouble((int) DBAdapter.COL_LATITUTDE);
+                double longtitude = cursor.getDouble((int) DBAdapter.COL_LONGTITUDE);
+
+                drawRouteOnMap(latitude, longtitude);
+            } while (cursor.moveToNext());
+
+        cursor.close();
+    }
+
+    private void drawRouteOnMap(double latitude, double longtitude)
+    {
+        PolylineOptions rectOptions = new PolylineOptions()
+                .add((new LatLng(latitude, longtitude)));
+
+        Polyline polyline = mMap.addPolyline((rectOptions)
+                .color(Color.RED));
+    }
+
+
 }
