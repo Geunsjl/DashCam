@@ -4,6 +4,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -66,13 +68,7 @@ public class MapsActivity extends FragmentActivity {
     private void setUpMap() {
         mMap.setMyLocationEnabled(true);
 
-        // Polylines are useful for marking paths and routes on the map.
-        mMap.addPolyline(new PolylineOptions().geodesic(true)
-                .add(new LatLng(-33.866, 151.195))  // Sydney
-                .add(new LatLng(-18.142, 178.431))  // Fiji
-                .add(new LatLng(21.291, -157.821))  // Hawaii
-                .add(new LatLng(37.423, -122.091))  // Mountain View
-        );
+
     }
 
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
@@ -80,6 +76,9 @@ public class MapsActivity extends FragmentActivity {
         public void onMyLocationChange(Location location) {
 
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(loc, 10);
+            mMap.animateCamera(cameraUpdate);
 
             mMap.addPolyline(new PolylineOptions().geodesic(true)
                 .add(new LatLng(location.getLatitude(), location.getLongitude())));
