@@ -12,7 +12,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.Calendar;
@@ -29,6 +28,7 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+        openDB();
         mMap.setOnMyLocationChangeListener(myLocationChangeListener);
 
 
@@ -97,8 +97,6 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
         mMap.setMyLocationEnabled(true);
-
-
     }
 
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
@@ -109,7 +107,7 @@ public class MapsActivity extends FragmentActivity {
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
 
             //update map position
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(loc, 10);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(loc, 2);
             mMap.animateCamera(cameraUpdate);
 
             //Write location to database
@@ -148,7 +146,7 @@ public class MapsActivity extends FragmentActivity {
         PolylineOptions rectOptions = new PolylineOptions()
                 .add((new LatLng(latitude, longtitude)));
 
-        Polyline polyline = mMap.addPolyline((rectOptions)
+        mMap.addPolyline((rectOptions)
                 .color(Color.RED));
     }
 
