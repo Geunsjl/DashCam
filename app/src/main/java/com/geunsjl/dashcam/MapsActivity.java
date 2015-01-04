@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,6 +21,10 @@ import java.util.Calendar;
 
 
 public class MapsActivity extends FragmentActivity {
+
+    // LIstview
+    private ListView lv;
+    ArrayAdapter<LatLng> arrayAdapter;
 
     //DBAdapter myDb;
     DatabaseHandler myDb;
@@ -41,6 +47,11 @@ public class MapsActivity extends FragmentActivity {
         mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         mMap.setMyLocationEnabled(true);
         arrayPoints.clear();
+
+        lv = (ListView) findViewById(R.id.listView);
+        arrayAdapter = new ArrayAdapter<LatLng>(
+                this, android.R.layout.simple_list_item_1, arrayPoints);
+
     }
 
     @Override
@@ -80,23 +91,29 @@ public class MapsActivity extends FragmentActivity {
 
 
             String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-
-            //get current location
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-
-            arrayPoints.add(loc);
 
             //Update camera
             MoveCamera(loc);
             //Write location to database
             myDb.addLocation(loc.latitude, loc.longitude);
 
-            //Map leegmaken
-            mMap.clear();
             //Draw route on map
             drawRouteOnMap();
         }
     };
+
+    public void sampleData()
+    {
+        LatLng loc2 = new LatLng(53.558, 9.927);
+        LatLng loc3 = new LatLng(53.551, 9.993);
+        //arrayPoints.add(loc);
+        arrayPoints.add(loc2);
+        arrayPoints.add(loc3);
+
+        myDb.addLocation(loc2.latitude, loc2.longitude);
+        myDb.addLocation(loc3.latitude, loc3.longitude);
+    }
 
     //Update camera angle
     public void MoveCamera(LatLng loc)
@@ -110,13 +127,12 @@ public class MapsActivity extends FragmentActivity {
 
     //display route
     public void showRoute()
-    {
+    {   sampleData();
         Cursor cursor = myDb.getAllLocations();
         displayRecordSet(cursor);
     }
 
     private void displayRecordSet(Cursor cursor) {
-        mMap.clear();
         arrayPoints.clear();
         updateCam = false;
         if(cursor.moveToFirst())
@@ -124,10 +140,11 @@ public class MapsActivity extends FragmentActivity {
             //TODO: lees de eerste plaats en ga hiernaartoe met de camera
             //Process data
             do {
-                //extract from mdb
+                //extract fro mdb
                 double latitude = cursor.getDouble((int) DBAdapter.COL_LATITUTDE);
                 double longtitude = cursor.getDouble((int) DBAdapter.COL_LONGTITUDE);
-
+                System.out.print(latitude);
+                System.out.print(longtitude);
                 LatLng loc = new LatLng(latitude, longtitude);
 
                 arrayPoints.add(loc);
@@ -135,12 +152,14 @@ public class MapsActivity extends FragmentActivity {
                 //draw route on map
                 drawRouteOnMap();
             } while (cursor.moveToNext());
-
+        lv.setAdapter(arrayAdapter);
         cursor.close();
     }
 
     private void drawRouteOnMap()
     {
+        //Map leegmaken
+
         PolylineOptions polylineOptions = new PolylineOptions();
         polylineOptions.addAll(arrayPoints);
         polylineOptions

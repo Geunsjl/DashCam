@@ -9,4 +9,10 @@
     tools:context="com.geunsjl.dashcam.MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment" />
 
+    <ListView
+        android:layout_width="203dp"
+        android:layout_height="210dp"
+        android:id="@+id/listView"
+        android:layout_gravity="left|top" />
+
 </FrameLayout>

@@ -58,8 +58,8 @@ public class MainActivity extends ActionBarActivity {
         startActivity(myIntent);
     }
 
-    public void goToSettings(View v){
-        Intent myIntent = new Intent(this, SettingsActivity.class);
+    public void goToDB(View v){
+        Intent myIntent = new Intent(this, AndroidDatabaseManager.class);
         startActivity(myIntent);
     }
 

@@ -45,6 +45,7 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <activity android:name="com.geunsjl.dashcam.AndroidDatabaseManager"  />
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
@@ -60,7 +61,11 @@
         <activity
             android:name=".CameraActivity"
             android:label="@string/title_activity_camera"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".MapShowRoute"
+            android:label="@string/title_activity_map_show_route" >
         </activity>
     </application>
 
