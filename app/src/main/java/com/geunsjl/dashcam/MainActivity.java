@@ -70,8 +70,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void onClick_ShowRoute(View v)
     {
-        Intent ShowRoute = new Intent(this, MapsActivity.class);
-        ShowRoute.putExtra("showRoute","showRoute");
+        Intent ShowRoute = new Intent(this, ShowRoute.class);
         startActivity(ShowRoute);
     }
 

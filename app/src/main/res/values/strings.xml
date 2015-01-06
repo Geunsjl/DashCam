@@ -20,5 +20,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_map_show_route">Map</string>
+    <string name="title_activity_show_route">Map</string>
 
 </resources>
