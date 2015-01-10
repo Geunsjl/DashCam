@@ -7,13 +7,13 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class MapsActivity extends FragmentActivity {
@@ -29,6 +29,9 @@ public class MapsActivity extends FragmentActivity {
 
     private ArrayList<LatLng> arrayPoints = new ArrayList<LatLng>();
 
+    //Laatste route
+    int lastRoute = 1;
+
     PolylineOptions polylineOptions;
 
     @Override
@@ -40,14 +43,18 @@ public class MapsActivity extends FragmentActivity {
         mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         mMap.setMyLocationEnabled(true);
         arrayPoints.clear();
+        checkRouteNumber();
+    }
 
+    private void checkRouteNumber() {
+        lastRoute = myDb.getLatestRouteNumber();
+        lastRoute++;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
-
     }
 
     private void setUpMapIfNeeded() {
@@ -72,14 +79,16 @@ public class MapsActivity extends FragmentActivity {
         public void onMyLocationChange(Location location) {
 
 
-            String mydate = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
 
             //loc in arraylist
             arrayPoints.add(loc);
 
             //Write location to database
-            myDb.addLocation(loc.latitude, loc.longitude);
+            myDb.addLocation(loc.latitude, loc.longitude, lastRoute);
+
+            //UPdate camera
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
 
             //Draw route on map
             drawRouteOnMap();

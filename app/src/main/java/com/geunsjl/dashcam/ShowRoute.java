@@ -4,9 +4,8 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -18,15 +17,8 @@ public class ShowRoute extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
-    // LIstview
-    private ListView lv;
-    ArrayAdapter<LatLng> arrayAdapter;
-
     //DBAdapter myDb;
     DatabaseHandler myDb;
-
-    //Update camera bool
-    boolean updateCam = true;
 
     private ArrayList<LatLng> arrayPoints = new ArrayList<LatLng>();
 
@@ -86,28 +78,16 @@ public class ShowRoute extends FragmentActivity {
 
     //display route
     public void showRoute()
-    {   sampleData();
-        drawRouteOnMap();
+    {
         Cursor cursor = myDb.getAllLocations();
         displayRecordSet(cursor);
     }
 
-    public void sampleData()
-    {
-        LatLng loc2 = new LatLng(53.558, 9.927);
-        LatLng loc3 = new LatLng(53.551, 9.993);
-        //arrayPoints.add(loc);
-        arrayPoints.add(loc2);
-        arrayPoints.add(loc3);
-
-        myDb.addLocation(loc2.latitude, loc2.longitude);
-        myDb.addLocation(loc3.latitude, loc3.longitude);
-    }
-
     private void displayRecordSet(Cursor cursor) {
         arrayPoints.clear();
-        updateCam = false;
+        LatLng loc = null;
         if(cursor.moveToFirst())
+
 
             //TODO: lees de eerste plaats en ga hiernaartoe met de camera
             //Process data
@@ -117,13 +97,17 @@ public class ShowRoute extends FragmentActivity {
                 double longtitude = cursor.getDouble((int) DatabaseHandler.COL_LONGTITUDE);
                 System.out.print(latitude);
                 System.out.print(longtitude);
-                LatLng loc = new LatLng(latitude, longtitude);
+                loc = new LatLng(latitude, longtitude);
 
                 arrayPoints.add(loc);
 
                 //draw route on map
                 drawRouteOnMap();
             } while (cursor.moveToNext());
+        if(loc != null)
+        {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 10));
+        }
 
         cursor.close();
     }

@@ -6,9 +6,9 @@ import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -29,12 +29,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "id";
     private static final String KEY_LATITUDE = "latitude";
     private static final String KEY_LONGTITUDE = "longtitude";
+    private static final String KEY_ROUTENUMBER = "routenNumber";
 
     //Kolomnamen
     public static final double COL_LATITUTDE = 1;
     public static final double COL_LONGTITUDE = 2;
+    public static final int COL_ROUTENUMBER = 3;
 
-    public static final String[] ALL_KEYS = new String[] {KEY_ID, KEY_LATITUDE, KEY_LONGTITUDE};
+    public static final String[] ALL_KEYS = new String[] {KEY_ID, KEY_LATITUDE, KEY_LONGTITUDE, KEY_ROUTENUMBER};
 
     public DatabaseHandler(Context context)
     {
@@ -48,7 +50,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         String CREATE_LOCATIONS_TABLE = "CREATE TABLE " + TABLE_LOCATIONS + "("
             + KEY_ID + " INTEGER PRIMARY KEY," + KEY_LATITUDE + " DOUBLE,"
-            + KEY_LONGTITUDE + " DOUBLE" + ")";
+            + KEY_LONGTITUDE + " DOUBLE,"
+            + KEY_ROUTENUMBER + " INTEGER" + ")";
         db.execSQL(CREATE_LOCATIONS_TABLE);
     }
 
@@ -65,13 +68,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //CRUD METHODS
 
     //Add new record
-    public void addLocation(double latitude, double longtitude)
+    public void addLocation(double latitude, double longtitude, int routeNumber)
     {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_LATITUDE, latitude); //latitude
         values.put(KEY_LONGTITUDE, longtitude); //longtitude
+        values.put(KEY_ROUTENUMBER, routeNumber);
 
         //Inserting row
         db.insert(TABLE_LOCATIONS, null, values);
@@ -91,7 +95,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return c;
     }
 
-    public ArrayList<Cursor> getData(String Query) throws SQLException {
+    public int getLatestRouteNumber()
+    {
+        int number = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        final SQLiteStatement stmt = db.compileStatement("SELECT MAX(" + KEY_ROUTENUMBER + ") FROM " + TABLE_LOCATIONS);
+
+        return (int) stmt.simpleQueryForLong();
+    }
+
+    public ArrayList<Cursor> getData(String Query){
         //get writable database
         SQLiteDatabase sqlDB = this.getWritableDatabase();
         String[] columns = new String[] { "mesage" };
@@ -134,5 +147,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     }
+
 
 }
