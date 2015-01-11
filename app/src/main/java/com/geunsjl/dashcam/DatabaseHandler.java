@@ -96,6 +96,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return c;
     }
 
+    public Cursor getAllLocations(long id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_LOCATIONS + " WHERE _id = " + id;
+        int x = 0;
+        Cursor c = 	db.rawQuery(query, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
     public int getLatestRouteNumber()
     {
         int number = 0;

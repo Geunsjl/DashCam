@@ -1,5 +1,6 @@
 package com.geunsjl.dashcam;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ public class ShowRoute extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
+    Intent intent;
     //DBAdapter myDb;
     DatabaseHandler myDb;
 
@@ -25,11 +27,18 @@ public class ShowRoute extends FragmentActivity {
     PolylineOptions polylineOptions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        IntentData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_route);
         setUpMapIfNeeded();
         myDb = new DatabaseHandler(this);
-        showRoute();
+
+    }
+
+    private void IntentData() {
+        Intent myIntent = getIntent();
+        int intValue = myIntent.getIntExtra("intRoute", 100);
+        int x = 0;
     }
 
     @Override
@@ -38,21 +47,12 @@ public class ShowRoute extends FragmentActivity {
         setUpMapIfNeeded();
     }
 
-    /**
-     * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
-     * installed) and the map has not already been instantiated.. This will ensure that we only ever
-     * call {@link #setUpMap()} once when {@link #mMap} is not null.
-     * <p/>
-     * If it isn't installed {@link SupportMapFragment} (and
-     * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
-     * install/update the Google Play services APK on their device.
-     * <p/>
-     * A user can return to this FragmentActivity after following the prompt and correctly
-     * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
-     * have been completely destroyed during this process (it is likely that it would only be
-     * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
-     * method in {@link #onResume()} to guarantee that it will be called.
-     */
+    public void ShowRouteFromList(long id)
+    {
+        Cursor cursor = myDb.getAllLocations(id);
+        displayRecordSet(cursor);
+    }
+
     private void setUpMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
@@ -74,13 +74,6 @@ public class ShowRoute extends FragmentActivity {
      */
     private void setUpMap() {
 
-    }
-
-    //display route
-    public void showRoute()
-    {
-        Cursor cursor = myDb.getAllLocations();
-        displayRecordSet(cursor);
     }
 
     private void displayRecordSet(Cursor cursor) {
@@ -126,4 +119,6 @@ public class ShowRoute extends FragmentActivity {
         mMap.addPolyline(polylineOptions);
 
     }
+
+
 }
