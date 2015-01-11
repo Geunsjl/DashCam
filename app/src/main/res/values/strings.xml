@@ -21,5 +21,7 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_map_show_route">Map</string>
     <string name="title_activity_show_route">Map</string>
+    <string name="title_activity_route_details">RouteDetails</string>
+    <string name="TitelRoutePicker">Chose your route</string>
 
 </resources>

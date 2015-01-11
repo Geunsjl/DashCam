@@ -26,10 +26,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_LOCATIONS = "locations";
 
     //Locations Table Column names
-    private static final String KEY_ID = "id";
-    private static final String KEY_LATITUDE = "latitude";
-    private static final String KEY_LONGTITUDE = "longtitude";
-    private static final String KEY_ROUTENUMBER = "routenNumber";
+    public static final String KEY_ID = "_id";
+    public static final String KEY_LATITUDE = "latitude";
+    public static final String KEY_LONGTITUDE = "longtitude";
+    public static final String KEY_ROUTENUMBER = "routenNumber";
 
     //Kolomnamen
     public static final double COL_LATITUTDE = 1;
@@ -49,7 +49,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db)
     {
         String CREATE_LOCATIONS_TABLE = "CREATE TABLE " + TABLE_LOCATIONS + "("
-            + KEY_ID + " INTEGER PRIMARY KEY," + KEY_LATITUDE + " DOUBLE,"
+            + KEY_ID + " INTEGER PRIMARY KEY,"
+            + KEY_LATITUDE + " DOUBLE,"
             + KEY_LONGTITUDE + " DOUBLE,"
             + KEY_ROUTENUMBER + " INTEGER" + ")";
         db.execSQL(CREATE_LOCATIONS_TABLE);

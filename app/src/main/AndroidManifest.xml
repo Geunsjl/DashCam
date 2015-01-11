@@ -71,6 +71,10 @@
             android:name=".ShowRoute"
             android:label="@string/title_activity_show_route" >
         </activity>
+        <activity
+            android:name=".RouteDetails"
+            android:label="@string/title_activity_route_details" >
+        </activity>
     </application>
 
 </manifest>
