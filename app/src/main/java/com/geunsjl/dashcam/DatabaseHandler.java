@@ -96,11 +96,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return c;
     }
 
-    public Cursor getAllLocations(long id)
+    public Cursor getAllLocations(int id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_LOCATIONS + " WHERE _id = " + id;
-        int x = 0;
+        Cursor c = 	db.rawQuery(query, null);
+        if (c != null) {
+            c.moveToFirst();
+        }
+        return c;
+    }
+
+    public Cursor getRouteNumber()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_LOCATIONS + " GROUP BY " + KEY_ROUTENUMBER;
         Cursor c = 	db.rawQuery(query, null);
         if (c != null) {
             c.moveToFirst();
@@ -110,7 +120,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public int getLatestRouteNumber()
     {
-        int number = 0;
         SQLiteDatabase db = this.getReadableDatabase();
         final SQLiteStatement stmt = db.compileStatement("SELECT MAX(" + KEY_ROUTENUMBER + ") FROM " + TABLE_LOCATIONS);
 

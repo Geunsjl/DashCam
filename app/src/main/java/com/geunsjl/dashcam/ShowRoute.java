@@ -31,14 +31,12 @@ public class ShowRoute extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_route);
         setUpMapIfNeeded();
-        myDb = new DatabaseHandler(this);
-
     }
 
     private void IntentData() {
         Intent myIntent = getIntent();
-        int intValue = myIntent.getIntExtra("intRoute", 100);
-        int x = 0;
+        int id = myIntent.getIntExtra("intRoute", 100) + 1;
+        ShowRouteFromList(id);
     }
 
     @Override
@@ -47,10 +45,12 @@ public class ShowRoute extends FragmentActivity {
         setUpMapIfNeeded();
     }
 
-    public void ShowRouteFromList(long id)
+    public void ShowRouteFromList(int id)
     {
-        Cursor cursor = myDb.getAllLocations(id);
-        displayRecordSet(cursor);
+        myDb = new DatabaseHandler(this);
+        int testwaarde = id;
+        Cursor c = myDb.getAllLocations(testwaarde);
+        displayRecordSet(c);
     }
 
     private void setUpMapIfNeeded() {
@@ -72,9 +72,7 @@ public class ShowRoute extends FragmentActivity {
      * <p/>
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
-    private void setUpMap() {
-
-    }
+    private void setUpMap() {mMap.setMyLocationEnabled(true); }
 
     private void displayRecordSet(Cursor cursor) {
         arrayPoints.clear();
