@@ -99,7 +99,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Cursor getAllLocations(int id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_LOCATIONS + " WHERE _id = " + id;
+        String query = "SELECT * FROM " + TABLE_LOCATIONS + " GROUP BY " + KEY_ID + " HAVING " + KEY_ROUTENUMBER + " = " + id;
         Cursor c = 	db.rawQuery(query, null);
         if (c != null) {
             c.moveToFirst();

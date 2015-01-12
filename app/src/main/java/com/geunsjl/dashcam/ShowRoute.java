@@ -17,20 +17,16 @@ import java.util.ArrayList;
 public class ShowRoute extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-
-    Intent intent;
     //DBAdapter myDb;
     DatabaseHandler myDb;
-
     private ArrayList<LatLng> arrayPoints = new ArrayList<LatLng>();
 
-    PolylineOptions polylineOptions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        IntentData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_route);
         setUpMapIfNeeded();
+        IntentData();
     }
 
     private void IntentData() {
@@ -78,8 +74,6 @@ public class ShowRoute extends FragmentActivity {
         arrayPoints.clear();
         LatLng loc = null;
         if(cursor.moveToFirst())
-
-
             //TODO: lees de eerste plaats en ga hiernaartoe met de camera
             //Process data
             do {
@@ -91,13 +85,13 @@ public class ShowRoute extends FragmentActivity {
                 loc = new LatLng(latitude, longtitude);
 
                 arrayPoints.add(loc);
-
                 //draw route on map
-                drawRouteOnMap();
+
             } while (cursor.moveToNext());
         if(loc != null)
         {
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 10));
+            drawRouteOnMap();
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 15));
         }
 
         cursor.close();
@@ -114,7 +108,15 @@ public class ShowRoute extends FragmentActivity {
                 .color(Color.RED);
 
         //Nieuwe polyline toevoegen aan map
-        mMap.addPolyline(polylineOptions);
+        if(mMap != null)
+        {
+            mMap.addPolyline(polylineOptions);
+        }
+        else
+        {
+            System.out.print("failed maps");
+        }
+
 
     }
 
